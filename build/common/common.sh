@@ -75,9 +75,12 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	sed -i 's/定时更新 LUCI/固件更新 LUCI/g' feeds/luci/applications/luci-app-autoupdate/po/zh-cn/autoupdate.po
 fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
-	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
-	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
-	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
+#	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
+#	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
+#	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
+       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/files/" "${Home}/"
+       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/diy/" "${Home}/"
+       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/patches/" "${PATH1}/patches/"
 elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
