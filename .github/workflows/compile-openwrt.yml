@@ -90,14 +90,7 @@ jobs:
         sudo sed -i '/NVM_DIR/d;/skel/d' /root/{.bashrc,.profile}
         rm -rf ~/{.cargo,.dotnet,.rustup}
         df -Th
-        
-    - name: 设置 ulimit 限制
-      run: |
-        ulimit -n 1048576   # 增加最大文件描述符
-        ulimit -f unlimited # 允许文件大小不受限制
-        ulimit -v unlimited # 允许虚拟内存不受限制
-        ulimit -m unlimited # 允许物理内存不受限制
-        ulimit -a          # 显示新的限制值
+
         
     - name: 部署环境
       env:
