@@ -78,9 +78,45 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
 #	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
 #	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
 #	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
-       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/files/" "${Home}/"
-       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/diy/" "${Home}/"
-       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/patches/" "${PATH1}/patches/"
+#       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/files/" "${Home}/"
+#       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/diy/" "${Home}/"
+#       rsync -avP --ignore-existing --no-perms --no-owner --no-group "${Home}/build/common/LEDE/patches/" "${PATH1}/patches/"
+
+
+       # 下载 Clash Meta 并移动到目标目录
+       CLASH_DIR="${Home}/package/base-files/files/etc/openclash/core/"
+       CLASH_URL="https://raw.githubusercontent.com/vernesong/OpenClash/refs/heads/core/master/meta/clash-linux-amd64.tar.gz"
+       CLASH_TAR="/tmp/clash-linux-amd64.tar.gz"
+
+       # 创建目标目录（如果不存在）
+       mkdir -p "${CLASH_DIR}"
+
+       # 下载 Clash Meta
+       echo "正在下载 Clash Meta..."
+       curl -L -o "${CLASH_TAR}" "${CLASH_URL}" || wget -O "${CLASH_TAR}" "${CLASH_URL}"
+
+       # 检查是否下载成功
+       if [[ -f "${CLASH_TAR}" ]]; then
+           echo "下载成功，正在解压..."
+           tar -xzf "${CLASH_TAR}" -C /tmp/
+           
+           # 查找解压后的 Clash 可执行文件
+           CLASH_FILE=$(find /tmp -type f -name "clash*" | head -n 1)
+           
+           if [[ -n "${CLASH_FILE}" ]]; then
+               echo "找到 Clash 可执行文件，正在移动到目标目录..."
+               mv "${CLASH_FILE}" "${CLASH_DIR}/clash_meta"
+               chmod +x "${CLASH_DIR}/clash_meta"
+               echo "Clash Meta 安装成功：${CLASH_DIR}/clash_meta"
+           else
+               echo "解压失败，未找到 Clash 可执行文件"
+               exit 1
+           fi
+       else
+           echo "下载失败"
+           exit 1
+       fi
+
 elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
