@@ -84,7 +84,7 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
 
 
        # 下载 Clash Meta 并移动到目标目录
-       CLASH_DIR="${Home}/package/base-files/files/etc/openclash/core/"
+       CLASH_DIR="${Home}/package/base-files/files/etc/openclash/core"
        CLASH_URL="https://raw.githubusercontent.com/vernesong/OpenClash/refs/heads/core/master/meta/clash-linux-amd64.tar.gz"
        CLASH_TAR="/tmp/clash-linux-amd64.tar.gz"
 
